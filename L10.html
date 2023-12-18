@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #quadrado {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            position: absolute;
+        }
+        .greenSquare {
+            width: 50px;
+            height: 50px;
+            background-color: green;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div id="quadrado"></div>
+
+    <script>
+        var quadrado = document.getElementById("quadrado");
+        var posX = 0;
+        var posY = 0;
+        var speed = 5;
+
+        function moveQuadrado(direction) {
+            // Implementação da lógica de movimento
+            // ...
+        }
+
+        document.addEventListener("keydown", function (event) {
+            // Implementação da lógica de movimento do quadrado
+            // ...
+        });
+
+        var maxGreenSquares = 5; // Defina o número máximo de quadrados verdes aqui
+        for (var i = 0; i < maxGreenSquares; i++) {
+            var greenSquare = document.createElement("div");
+            greenSquare.classList.add("greenSquare");
+            greenSquare.style.top = Math.random() * window.innerHeight + "px";
+            greenSquare.style.left = Math.random() * window.innerWidth + "px";
+            document.body.appendChild(greenSquare);
+        }
+    </script>
+</body>
+</html>

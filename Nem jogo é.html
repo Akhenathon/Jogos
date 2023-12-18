@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Troca de Tela</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        .tela {
+            display: none;
+            height: 100vh; /* Ocupa 100% da altura da viewport */
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+        }
+
+        .tela1 {
+            background-image: url('https://i.etsystatic.com/41465127/r/il/10c8a9/4807685781/il_fullxfull.4807685781_4li2.jpg'); /* Substitua pelo caminho da sua imagem */
+        }
+
+        .tela2 {
+            background-image: url('https://st.depositphotos.com/50990794/57579/v/450/depositphotos_575799546-stock-illustration-grass-texture-pixel-art-vector.jpg'); /* Substitua pelo caminho da sua imagem */
+        }
+
+        .tela-visivel {
+            display: block;
+        }
+
+        h1 {
+            margin-top: 50px;
+            color: yellow;
+        }
+
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="tela1" class="tela tela1 tela-visivel">
+        <h1 style=" margin-top: 0px;">NOITE ESCURA MMORPG</h1>
+        <button onclick="trocarTela()">Jogar</button>
+        <button onclick="trocarTela()">Opções</button>
+        <button onclick="trocarTela()">Creditos</button>
+        <button onclick="trocarTela()">Sair</button>
+    </div>
+
+    <div id="tela2" class="tela tela2">
+        <canvas id="gameCanvas" width="900" height="700"></canvas>
+    </div>
+
+    <script>
+        var cnv = document.getElementById('gameCanvas');
+        var ctx = cnv.getContext('2d');
+
+        // Imagem do personagem
+        var characterImage = new Image();
+        characterImage.src = 'https://img.freepik.com/vetores-premium/cubo-azul-com-estilo-pixel-art_475147-130.jpg'; // Substitua pelo caminho da sua imagem do personagem
+
+        function trocarTela() {
+            var tela1 = document.getElementById('tela1');
+            var tela2 = document.getElementById('tela2');
+
+            // Oculta a primeira tela
+            tela1.classList.remove('tela-visivel');
+            tela1.classList.add('tela');
+
+            // Exibe a segunda tela
+            tela2.classList.remove('tela');
+            tela2.classList.add('tela-visivel');
+
+            // Inicia o jogo após a transição de tela
+            startGame();
+        }
+
+        // Adiciona um personagem (imagem) na tela 2
+        var character = {
+            x: 50,
+            y: 50,
+            width: 50,
+            height: 50,
+            speed: 5
+        };
+
+        function drawCharacter() {
+            ctx.drawImage(characterImage, character.x, character.y, character.width, character.height);
+        }
+
+        function updateCharacter() {
+            // Atualiza a posição do personagem com base nas teclas pressionadas
+            if (keys.ArrowUp || keys.W) character.y -= character.speed;
+            if (keys.ArrowDown || keys.S) character.y += character.speed;
+            if (keys.ArrowLeft || keys.A) character.x -= character.speed;
+            if (keys.ArrowRight || keys.D) character.x += character.speed;
+
+            // Desenha o personagem na nova posição
+            drawCharacter();
+        }
+
+        // Adiciona um ouvinte de eventos de teclado
+        var keys = {};
+        window.addEventListener('keydown', function (e) {
+            keys[e.key] = true;
+        });
+
+        window.addEventListener('keyup', function (e) {
+            keys[e.key] = false;
+        });
+
+        function startGame() {
+            // Função para desenhar e atualizar o personagem
+            function drawAndUpdate() {
+                // Limpa o canvas
+                ctx.clearRect(0, 0, cnv.width, cnv.height);
+
+                // Adiciona outros elementos de jogo ou lógica aqui...
+
+                // Atualiza e desenha o personagem
+                updateCharacter();
+
+                // Repete a função no próximo frame
+                requestAnimationFrame(drawAndUpdate);
+            }
+
+            // Inicia o loop de jogo
+            drawAndUpdate();
+        }
+    </script>
+
+
+</body>
+</html>

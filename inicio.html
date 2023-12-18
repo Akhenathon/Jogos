@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tela de Play</title>
+    <link rel="stylesheet" href="C:\Users\User\Downloads\jogo\inicio.css">
+</head>
+
+<body>
+
+    <audio id="myAudio" src="assets/rpg.mp3" loop></audio>
+
+    <script>
+	
+        document.addEventListener("click", function() {
+            var audio = document.getElementById("myAudio");
+            audio.play();
+        });
+    </script>
+
+
+    <div id="tela-play" class="tela-play">
+	
+	
+        <center><h1>Darknigth RPG</h1></center>
+        <center><button onclick="mostrarOutraTela()">jogar</button></center>
+		
+    </div>
+
+
+    <div id="outra-tela" class="outra-tela">
+	
+        <div id="player"></div>
+        <script src="inicio.js"></script>
+<div>
+
+ <button  class="button" onclick="openDialog()" ></button>
+ 
+</div>
+
+  <dialog id="myDialog">
+    <h2>Aventureiro</h2>
+    <p>Bem-vindo ao mundo de Darknight um mundo</p>
+	<p>prestes a cair em colapso abandonado </p>
+	<p>por Deus a merce do ser maligno </p>
+	<p>o lord demonio sobreviva a esse mundo </p>
+	<p>de caos pois é o unico que podemos fazer.</p>
+	
+    <button onclick="closeDialog()">Fechar</button>
+  </dialog>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="jump()">Jump</button>
+    <canvas id="myCanvas" width="480" height="320"></canvas>
+
+    <script>
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext("2d");
+        var square = {
+            x: 50,
+            y: 250,
+            width: 50,
+            height: 50,
+            speed: 3,
+            gravity: 0.2,
+            jumpStrength: 5,
+            dx: 0,
+            dy: 0
+        };
+        var isJumping = false;
+
+        function drawSquare() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#FF0000";
+            ctx.fillRect(square.x, square.y, square.width, square.height);
+        }
+
+        function update() {
+            if (square.x + square.dx > 0 && square.x + square.dx < canvas.width - square.width) {
+                square.x += square.dx;
+            }
+            if (square.y + square.dy < canvas.height - square.height) {
+                square.dy += square.gravity;
+                square.y += square.dy;
+            } else {
+                square.dy = 0;
+                square.y = canvas.height - square.height;
+                isJumping = false;
+            }
+            drawSquare();
+        }
+
+        function keyDownHandler(event) {
+            if (event.key === "Right" || event.key === "ArrowRight") {
+                square.dx = square.speed;
+            } else if (event.key === "Left" || event.key === "ArrowLeft") {
+                square.dx = -square.speed;
+            }
+        }
+
+        function keyUpHandler(event) {
+            if (event.key === "Right" || event.key === "ArrowRight" || event.key === "Left" || event.key === "ArrowLeft") {
+                square.dx = 0;
+            }
+        }
+
+        function jump() {
+            if (!isJumping) {
+                square.dy = -square.jumpStrength;
+                isJumping = true;
+            }
+        }
+
+        document.addEventListener("keydown", keyDownHandler, false);
+        document.addEventListener("keyup", keyUpHandler, false);
+
+        setInterval(update, 10);
+    </script>
+</body>
+</html>

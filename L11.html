@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            position: relative;
+            font-family: Arial, sans-serif;
+        }
+        #quadrado {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            position: absolute;
+        }
+        .greenSquare, .blueSquare, .yellowSquare {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+        }
+        .greenSquare {
+            background-color: green;
+        }
+        .blueSquare {
+            background-color: blue;
+        }
+        .yellowSquare {
+            background-color: yellow;
+        }
+        #inventory {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 10px;
+            background-color: #333;
+            border: 2px solid #000;
+            color: #fff;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .slot {
+            width: 50px;
+            height: 50px;
+            border: 1px solid #000;
+            margin: 5px;
+            position: relative;
+        }
+        .slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .slot span {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            font-size: 12px;
+            color: #fff;
+            text-shadow: 1px 1px 1px #000;
+        }
+    </style>
+</head>
+<body>
+    <div id="quadrado"></div>
+    <div id="inventory"></div>
+
+    <script>
+        var player = document.getElementById("quadrado");
+        var posX = 0;
+        var posY = 0;
+        var speed = 5;
+        var inventory = document.getElementById("inventory");
+        var items = {};
+
+        function movePlayer(direction) {
+            switch (direction) {
+                case "up":
+                    posY -= speed;
+                    break;
+                case "down":
+                    posY += speed;
+                    break;
+                case "left":
+                    posX -= speed;
+                    break;
+                case "right":
+                    posX += speed;
+                    break;
+            }
+
+            player.style.top = posY + "px";
+            player.style.left = posX + "px";
+        }
+
+        function checkCollision() {
+            var playerRect = player.getBoundingClientRect();
+            var squareList = document.querySelectorAll(".greenSquare, .blueSquare, .yellowSquare");
+
+            for (var i = 0; i < squareList.length; i++) {
+                var square = squareList[i];
+                var squareRect = square.getBoundingClientRect();
+
+                if (
+                    playerRect.x < squareRect.x + squareRect.width &&
+                    playerRect.x + playerRect.width > squareRect.x &&
+                    playerRect.y < squareRect.y + squareRect.height &&
+                    playerRect.y + playerRect.height > squareRect.y
+                ) {
+                    square.style.display = "none";
+                    var color = square.classList[0];
+                    if (!items[color]) {
+                        items[color] = 0;
+                    }
+                    items[color]++;
+                    updateInventory();
+                }
+            }
+        }
+
+        function updateInventory() {
+            inventory.innerHTML = "";
+            for (var key in items) {
+                var slot = document.createElement("div");
+                slot.className = "slot";
+                var img = document.createElement("img");
+                img.src = key + ".png"; // Certifique-se de ter as imagens corretas
+                slot.appendChild(img);
+                var span = document.createElement("span");
+                span.innerText = items[key];
+                slot.appendChild(span);
+                inventory.appendChild(slot);
+            }
+        }
+
+        document.addEventListener("keydown", function (event) {
+            switch (event.key) {
+                case "ArrowUp":
+                    movePlayer("up");
+                    break;
+                case "ArrowDown":
+                    movePlayer("down");
+                    break;
+                case "ArrowLeft":
+                    movePlayer("left");
+                    break;
+                case "ArrowRight":
+                    movePlayer("right");
+                    break;
+            }
+            checkCollision();
+        });
+
+        var maxSquares = 5; // Defina o número máximo de quadrados por cor aqui
+
+        for (var i = 0; i < maxSquares; i++) {
+            var colors = ["green", "blue", "yellow"];
+            var randomColor = colors[Math.floor(Math.random() * colors.length)];
+            var square = document.createElement("div");
+            square.classList.add(randomColor + "Square");
+            square.style.top = Math.random() * window.innerHeight + "px";
+            square.style.left = Math.random() * window.innerWidth + "px";
+            document.body.appendChild(square);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #quadrado {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            position: absolute;
+        }
+        #questBlock {
+            width: 50px;
+            height: 50px;
+            background-color: green;
+            position: absolute;
+            left: 200px; /* Ajuste a posição conforme necessário */
+            top: 200px; /* Ajuste a posição conforme necessário */
+        }
+        #yellowBlock {
+            width: 50px;
+            height: 50px;
+            background-color: yellow;
+            position: absolute;
+            left: 300px; /* Ajuste a posição conforme necessário */
+            top: 300px; /* Ajuste a posição conforme necessário */
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="quadrado"></div>
+    <div id="questBlock"></div>
+    <div id="yellowBlock"></div>
+
+    <script>
+        var quadrado = document.getElementById("quadrado");
+        var questBlock = document.getElementById("questBlock");
+        var yellowBlock = document.getElementById("yellowBlock");
+        var posX = 0;
+        var posY = 0;
+        var speed = 5;
+        var hasQuest = false;
+        var hasYellowBlock = false;
+        var isCollidingWithQuestBlock = false;
+        var isNearQuestBlock = false;
+
+        function moveQuadrado(direction) {
+            switch (direction) {
+                case "up":
+                    posY -= speed;
+                    break;
+                case "down":
+                    posY += speed;
+                    break;
+                case "left":
+                    posX -= speed;
+                    break;
+                case "right":
+                    posX += speed;
+                    break;
+            }
+
+            quadrado.style.top = posY + "px";
+            quadrado.style.left = posX + "px";
+
+            checkQuestCompletion();
+        }
+
+        function checkQuestCompletion() {
+            if (!isCollidingWithQuestBlock && isColliding(quadrado, questBlock)) {
+                isNearQuestBlock = true;
+                isCollidingWithQuestBlock = true;
+                hasQuest = true;
+                yellowBlock.style.display = "block";
+                alert("Você recebeu uma missão para pegar o bloco amarelo!");
+            } else if (hasQuest && !hasYellowBlock && isColliding(quadrado, yellowBlock)) {
+                hasYellowBlock = true;
+                yellowBlock.style.display = "none";
+            }
+
+            if (!hasYellowBlock && isNearQuestBlock && !isCollidingWithQuestBlock && !isColliding(quadrado, questBlock)) {
+                alert("Parabéns! Você pegou o bloco amarelo!");
+                isNearQuestBlock = false;
+            }
+            
+            if (!isColliding(quadrado, questBlock)) {
+                isCollidingWithQuestBlock = false;
+            }
+        }
+
+        function isColliding(element1, element2) {
+            var rect1 = element1.getBoundingClientRect();
+            var rect2 = element2.getBoundingClientRect();
+            return !(
+                rect1.top > rect2.bottom ||
+                rect1.bottom < rect2.top ||
+                rect1.right < rect2.left ||
+                rect1.left > rect2.right
+            );
+        }
+
+        document.addEventListener("keydown", function (event) {
+            switch (event.key) {
+                case "ArrowUp":
+                    moveQuadrado("up");
+                    break;
+                case "ArrowDown":
+                    moveQuadrado("down");
+                    break;
+                case "ArrowLeft":
+                    moveQuadrado("left");
+                    break;
+                case "ArrowRight":
+                    moveQuadrado("right");
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>

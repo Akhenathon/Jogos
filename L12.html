@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #quadrado {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            position: absolute;
+        }
+        .bolinha {
+            width: 10px;
+            height: 10px;
+            background-color: blue;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div id="quadrado"></div>
+    <button onclick="launchBolinha()">Lançar Bolinha</button>
+    <button onclick="launchBolinhaExplode()">Lançar Bolinha Explode</button>
+    <button onclick="launchBolinhaZigZag()">Lançar Bolinha ZigZag</button>
+    <button onclick="launchBolinhaParada()">Lançar Bolinha Parada</button>
+
+    <script>
+        var quadrado = document.getElementById("quadrado");
+        var posX = 0;
+        var posY = 0;
+        var speed = 5;
+
+        function moveQuadrado(direction) {
+            switch (direction) {
+                // Implementação do movimento do quadrado
+                // ...
+            }
+
+            quadrado.style.top = posY + "px";
+            quadrado.style.left = posX + "px";
+        }
+
+        function launchBolinha() {
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.top = (posY + 20) + "px";
+            bolinha.style.left = (posX + 20) + "px";
+            document.body.appendChild(bolinha);
+
+            var bolinhaSpeed = 3;
+            var bolinhaPos = 0;
+
+            function animateBolinha() {
+                bolinhaPos += bolinhaSpeed;
+                bolinha.style.top = (posY + 20 - bolinhaPos) + "px";
+                if (bolinhaPos < window.innerHeight) {
+                    requestAnimationFrame(animateBolinha);
+                } else {
+                    bolinha.remove();
+                }
+            }
+
+            animateBolinha();
+        }
+
+        function launchBolinhaExplode() {
+            // Implementação do lançamento da bolinha que explode
+            var explodeInterval = setInterval(function () {
+                var bolinha = document.createElement("div");
+                bolinha.classList.add("bolinha");
+                bolinha.style.top = (posY + 20) + "px";
+                bolinha.style.left = (posX + 20) + "px";
+                document.body.appendChild(bolinha);
+
+                var bolinhaSpeed = 3;
+                var bolinhaPos = 0;
+
+                function animateBolinha() {
+                    bolinhaPos += bolinhaSpeed;
+                    bolinha.style.top = (posY + 20 - bolinhaPos) + "px";
+                    if (bolinhaPos < window.innerHeight) {
+                        requestAnimationFrame(animateBolinha);
+                    } else {
+                        bolinha.remove();
+                        clearInterval(explodeInterval);
+                    }
+                }
+
+                animateBolinha();
+            }, 500);
+        }
+
+        function launchBolinhaZigZag() {
+            // Implementação do lançamento da bolinha em zigzag
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.top = (posY + 20) + "px";
+            bolinha.style.left = (posX + 20) + "px";
+            document.body.appendChild(bolinha);
+
+            var zigZagPos = 0;
+            var bolinhaSpeed = 3;
+            var reverse = false;
+
+            function animateBolinhaZigZag() {
+                if (reverse) {
+                    zigZagPos -= bolinhaSpeed;
+                } else {
+                    zigZagPos += bolinhaSpeed;
+                }
+
+                bolinha.style.top = (posY + 20 - zigZagPos) + "px";
+                if (zigZagPos > window.innerHeight || zigZagPos < 0) {
+                    reverse = !reverse;
+                }
+
+                if (zigZagPos < window.innerHeight) {
+                    requestAnimationFrame(animateBolinhaZigZag);
+                } else {
+                    bolinha.remove();
+                }
+            }
+
+            animateBolinhaZigZag();
+        }
+
+        function launchBolinhaParada() {
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.top = (posY + 20) + "px";
+            bolinha.style.left = (posX + 20) + "px";
+            document.body.appendChild(bolinha);
+        }
+
+        document.addEventListener("keydown", function (event) {
+            switch (event.key) {
+                case "ArrowUp":
+                    moveQuadrado("up");
+                    break;
+                case "ArrowDown":
+                    moveQuadrado("down");
+                    break;
+                case "ArrowLeft":
+                    moveQuadrado("left");
+                    break;
+                case "ArrowRight":
+                    moveQuadrado("right");
+                    break;
+                case "Home":
+                    moveQuadrado("up-left");
+                    break;
+                case "PageUp":
+                    moveQuadrado("up-right");
+                    break;
+                case "End":
+                    moveQuadrado("down-left");
+                    break;
+                case "PageDown":
+                    moveQuadrado("down-right");
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>
